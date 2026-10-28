@@ -9,7 +9,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
                 "No fue posible realizar la consulta. Intente nuevamente");
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ProblemDetail> manejarCredenciales(BadCredentialsException ex) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ProblemDetail> manejarCredenciales(AuthenticationException ex) {
         return responder(HttpStatus.UNAUTHORIZED, "No autenticado", "Credenciales inválidas");
     }
 
