@@ -1,0 +1,20 @@
+{
+  "request": { "method": "GET", "url": "/formulas/form-001" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "codigo": "form-001",
+      "nombre": "Aleación Cuchilla Diamante A",
+      "aplicacionTecnica": "Cadena de corte para motosierra Ripit 5000",
+      "version": "1",
+      "estado": "APROBADA",
+      "componentes": [
+        { "skuMaterial": "mat-001", "nombreMaterial": "Hierro", "porcentaje": 60.0 },
+        { "skuMaterial": "mat-002", "nombreMaterial": "Cobalto", "porcentaje": 20.0 },
+        { "skuMaterial": "mat-003", "nombreMaterial": "Níquel", "porcentaje": 15.0 },
+        { "skuMaterial": "mat-004", "nombreMaterial": "Carbono", "porcentaje": 5.0 }
+      ]
+    }
+  }
+}

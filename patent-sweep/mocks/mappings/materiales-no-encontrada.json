@@ -1,0 +1,9 @@
+{
+  "priority": 10,
+  "request": { "method": "GET", "urlPathPattern": "/formulas/.*" },
+  "response": {
+    "status": 404,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "mensaje": "La fórmula consultada no fue encontrada" }
+  }
+}
