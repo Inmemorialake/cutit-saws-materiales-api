@@ -1,0 +1,4 @@
+# Perfil de desarrollo: más detalle en logs. Sin credenciales (llegan por variables de entorno).
+logging:
+  level:
+    co.edu.univalle.patentsweep: DEBUG
