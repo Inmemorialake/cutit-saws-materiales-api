@@ -24,6 +24,8 @@
         <springdoc.version>2.10.0</springdoc.version>
         <jjwt.version>0.13.0</jjwt.version>
         <jacoco.version>0.8.16</jacoco.version>
+        <embedded-postgres.version>2.2.2</embedded-postgres.version>
+        <embedded-postgres-binarios.version>16.15.0</embedded-postgres-binarios.version>
     </properties>
 
     <dependencies>
@@ -132,6 +134,28 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--
+            [Archetype Convention Addition] PostgreSQL embebido, solo para la prueba de integración del flujo
+            completo (Flyway + JPA + seguridad contra una base real, sin Docker). No se usa en las pruebas unitarias.
+        -->
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-postgres</artifactId>
+            <version>${embedded-postgres.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.zonky.test.postgres</groupId>
+            <artifactId>embedded-postgres-binaries-windows-amd64</artifactId>
+            <version>${embedded-postgres-binarios.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.zonky.test.postgres</groupId>
+            <artifactId>embedded-postgres-binaries-linux-amd64</artifactId>
+            <version>${embedded-postgres-binarios.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

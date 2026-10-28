@@ -39,7 +39,7 @@ class FuentePatentesDatasetAdapterTest {
         // Assert
         assertThat(resultado).extracting(PatenteExternaDTO::patenteId)
                 .containsExactly("PAT-998822", "PAT-554433", "PAT-110022", "PAT-770011");
-        assertThat(resultado.get(0).fechaSolicitud()).isEqualTo(LocalDate.of(2023, 3, 15));
+        assertThat(resultado.get(0).fechaSolicitud()).isEqualTo(LocalDate.of(2025, 3, 15));
     }
 
     @Test
@@ -56,7 +56,7 @@ class FuentePatentesDatasetAdapterTest {
     @DisplayName("Excluye las patentes solicitadas antes de la fecha mínima")
     void deberiaFiltrarPorFechaDeSolicitud() {
         // Act
-        List<PatenteExternaDTO> resultado = adaptador.buscarPatentes(List.of(), List.of(), LocalDate.of(2023, 1, 1));
+        List<PatenteExternaDTO> resultado = adaptador.buscarPatentes(List.of(), List.of(), LocalDate.of(2025, 1, 1));
 
         // Assert
         assertThat(resultado).extracting(PatenteExternaDTO::patenteId).containsExactly("PAT-998822", "PAT-554433");

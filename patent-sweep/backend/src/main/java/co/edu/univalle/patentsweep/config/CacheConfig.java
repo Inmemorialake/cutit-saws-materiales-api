@@ -21,7 +21,7 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
         CaffeineCacheManager gestor = new CaffeineCacheManager(CATALOGO_CLASIFICACIONES);
-        gestor.setCaffeine(Caffeine.newBuilder().expireAfterWrite(Duration.ofHours(1)).maximumSize(1_000));
+        gestor.setCaffeine(Caffeine.newBuilder().expireAfterWrite(Duration.ofHours(1)).maximumSize(1_000).recordStats());
         return gestor;
     }
 }
