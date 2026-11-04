@@ -1,0 +1,12 @@
+target/
+.git/
+.gitignore
+.env
+*.log
+coverage/
+node_modules/
+__pycache__/
+src/test/
+*.iml
+.idea/
+.vscode/

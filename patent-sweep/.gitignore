@@ -1,0 +1,21 @@
+# Secretos y configuración local
+.env
+*.log
+
+# Build y cobertura
+target/
+build/
+dist/
+coverage/
+
+# Python / Node (por si se agregan herramientas auxiliares)
+__pycache__/
+node_modules/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/

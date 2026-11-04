@@ -1,0 +1,18 @@
+{
+  "request": { "method": "GET", "url": "/formulas/form-003" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "codigo": "form-003",
+      "nombre": "Aleación Antigua C",
+      "aplicacionTecnica": "Línea retirada",
+      "version": "3",
+      "estado": "DESCONTINUADA",
+      "componentes": [
+        { "skuMaterial": "mat-001", "nombreMaterial": "Hierro", "porcentaje": 90.0 },
+        { "skuMaterial": "mat-004", "nombreMaterial": "Carbono", "porcentaje": 10.0 }
+      ]
+    }
+  }
+}

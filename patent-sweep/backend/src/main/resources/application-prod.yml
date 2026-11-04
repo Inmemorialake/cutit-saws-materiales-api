@@ -1,0 +1,5 @@
+# Perfil de producción: logs sobrios. Sin credenciales (llegan por variables de entorno).
+logging:
+  level:
+    root: INFO
+    co.edu.univalle.patentsweep: INFO
