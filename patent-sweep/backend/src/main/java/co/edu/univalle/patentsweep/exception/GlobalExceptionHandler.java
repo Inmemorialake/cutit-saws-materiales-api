@@ -1,6 +1,7 @@
 package co.edu.univalle.patentsweep.exception;
 
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -29,6 +30,15 @@ public class GlobalExceptionHandler {
                 .findFirst()
                 .map(error -> error.getDefaultMessage())
                 .orElse("La solicitud no es válida");
+        return responder(HttpStatus.BAD_REQUEST, "Solicitud inválida", detalle);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ProblemDetail> manejarConstraintViolation(ConstraintViolationException ex) {
+        String detalle = ex.getConstraintViolations().stream()
+                .findFirst()
+                .map(cv -> cv.getMessage())
+                .orElse("Parámetro de consulta no válido");
         return responder(HttpStatus.BAD_REQUEST, "Solicitud inválida", detalle);
     }
 

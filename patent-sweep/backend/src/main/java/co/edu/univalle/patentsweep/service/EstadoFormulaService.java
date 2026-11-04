@@ -1,6 +1,7 @@
 package co.edu.univalle.patentsweep.service;
 
 import co.edu.univalle.patentsweep.model.Formula;
+import co.edu.univalle.patentsweep.exception.FormulaNoEncontradaException;
 import co.edu.univalle.patentsweep.model.enums.EstadoConflicto;
 import co.edu.univalle.patentsweep.model.enums.EstadoFormula;
 import co.edu.univalle.patentsweep.model.enums.ResultadoRevision;
@@ -42,5 +43,14 @@ public class EstadoFormulaService {
         formula.setEstado(nuevoEstado);
         formula.setFechaUltimaRevision(fechaRevision);
         return formulaRepository.save(formula);
+    }
+
+    /**
+     * Consulta el estado precalculado de una fórmula para Fabricación (PB HU-04).
+     * Lanza FormulaNoEncontradaException si no existe en la base de datos.
+     */
+    public Formula consultarEstado(String formulaId) {
+        return formulaRepository.findById(formulaId)
+                .orElseThrow(FormulaNoEncontradaException::new);
     }
 }
