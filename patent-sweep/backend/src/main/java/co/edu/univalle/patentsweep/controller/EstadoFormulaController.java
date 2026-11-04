@@ -30,6 +30,7 @@ public class EstadoFormulaController {
         this.estadoFormulaService = estadoFormulaService;
     }
 
+
     @GetMapping("/estado")
     @Operation(summary = "Consultar el estado de una fórmula frente al barrido de patentes",
             description = "Permite a Fabricación verificar el estado precalculado de la fórmula "

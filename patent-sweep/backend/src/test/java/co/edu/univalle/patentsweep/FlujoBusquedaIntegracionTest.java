@@ -21,7 +21,6 @@ import co.edu.univalle.patentsweep.model.enums.EstadoNotificacion;
 import co.edu.univalle.patentsweep.repository.ConflictoRepository;
 import co.edu.univalle.patentsweep.repository.FormulaRepository;
 import co.edu.univalle.patentsweep.repository.NotificacionRepository;
-import co.edu.univalle.patentsweep.repository.RevisionFormulaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 import java.io.IOException;

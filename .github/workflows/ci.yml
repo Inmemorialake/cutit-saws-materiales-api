@@ -1,0 +1,56 @@
+name: CI Backend Patent Sweep
+
+on:
+  push:
+    branches:
+      - main
+      - develop-v1
+      - develop-v2
+  pull_request:
+    branches:
+      - main
+      - develop-v1
+      - develop-v2
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-and-quality:
+    runs-on: ubuntu-24.04
+
+    defaults:
+      run:
+        working-directory: patent-sweep/backend
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: patent-sweep/backend/pom.xml
+
+      - name: Ejecutar pruebas unitarias y de integración
+        run: mvn --batch-mode --no-transfer-progress clean test
+
+      - name: Validar cobertura mínima con JaCoCo
+        run: mvn --batch-mode --no-transfer-progress jacoco:report jacoco:check
+
+      - name: Inspeccionar estilo con Checkstyle
+        run: mvn --batch-mode --no-transfer-progress checkstyle:check
+
+      - name: Construir el artefacto
+        run: mvn --batch-mode --no-transfer-progress package -DskipTests
+
+      - name: Guardar el JAR generado
+        uses: actions/upload-artifact@v4
+        with:
+          name: patent-sweep-${{ github.sha }}
+          path: patent-sweep/backend/target/patent-sweep.jar
+          if-no-files-found: error

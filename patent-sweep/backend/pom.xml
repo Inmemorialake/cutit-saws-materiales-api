@@ -177,7 +177,7 @@
             </plugin>
 
             <!--
-                [Archetype Convention Addition] JaCoCo: exige 100 % de cobertura de líneas y ramas
+                [Archetype Convention Addition] JaCoCo: exige al menos 81 % de cobertura de líneas y ramas
                 en la capa de lógica (paquete service), según la regla R3 del arquetipo.
                 Reporte: mvn verify -> target/site/jacoco/index.html
             -->
@@ -185,6 +185,29 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <rules>
+                        <rule>
+                            <element>PACKAGE</element>
+                            <includes>
+                                <include>co.edu.univalle.patentsweep.service</include>
+                                <include>co.edu.univalle.patentsweep.service.event</include>
+                            </includes>
+                            <limits>
+                                <limit>
+                                    <counter>LINE</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.81</minimum>
+                                </limit>
+                                <limit>
+                                    <counter>BRANCH</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.81</minimum>
+                                </limit>
+                            </limits>
+                        </rule>
+                    </rules>
+                </configuration>
                 <executions>
                     <execution>
                         <id>preparar-agente</id>
@@ -205,29 +228,32 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>PACKAGE</element>
-                                    <includes>
-                                        <include>co.edu.univalle.patentsweep.service</include>
-                                        <include>co.edu.univalle.patentsweep.service.event</include>
-                                    </includes>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.81</minimum>
-                                        </limit>
-                                        <limit>
-                                            <counter>BRANCH</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.81</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>10.21.4</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>config/checkstyle/checkstyle.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <failOnViolation>true</failOnViolation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>verificar-estilo</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

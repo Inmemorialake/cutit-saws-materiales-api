@@ -1,6 +1,6 @@
 # Cómo ejecutar y probar la API Patent Sweep (Equipo 2)
 
-Versión 1.0.0 del arquetipo — rama `develop-v1`. Curso 750021C Desarrollo de Software II, Universidad del Valle, 2026-2.
+Versión 1.0.0 del arquetipo — rama actual `develop-v2`. Curso 750021C Desarrollo de Software II, Universidad del Valle, 2026-2.
 
 ---
 
@@ -27,13 +27,14 @@ errores en formato ProblemDetail (RFC 9457) con `traceId`, Docker multi-etapa y 
 
 ### Calidad
 
-- 90 pruebas automáticas (JUnit 5 y Mockito, estilo AAA) más una prueba de integración con PostgreSQL embebido.
-- Cobertura del 100 % de líneas y ramas en la capa de lógica (`service`), verificada con JaCoCo.
+- Pruebas automatizadas con JUnit 5 y Mockito, más una prueba de integración con PostgreSQL embebido.
+- JaCoCo exige al menos 81 % de cobertura de líneas y ramas en los paquetes `service` y `service.event`.
+- El workflow de GitHub Actions ejecuta pruebas, cobertura, Checkstyle y empaqueta el backend en cada PR a las ramas configuradas.
 
 ### Qué **no** trae todavía
 
 HU-01 (barrido automático y `BarridoScheduler`), HU-03 a HU-11 (evaluación de fórmulas, estado, historial, conflictos y
-configuración), CI/CD con SonarCloud, y monitoreo con Prometheus y Grafana. Los demás detalles están en el `README.md`.
+configuración), integración de SonarCloud, despliegue automatizado y monitoreo con Grafana. Los demás detalles están en el `README.md`.
 
 ---
 
@@ -51,7 +52,7 @@ No hace falta instalar Java, Maven ni PostgreSQL para usar la API.
 ```bash
 git clone https://github.com/Inmemorialake/Desarrollo-II.git
 cd Desarrollo-II
-git checkout develop-v1
+git checkout develop-v2
 cd patent-sweep
 cp .env.example .env
 docker compose up --build

@@ -33,7 +33,7 @@ El ejemplo transaccional recorre todas las capas: `POST /api/v1/auth/login` → 
 ```bash
 git clone https://github.com/Inmemorialake/Desarrollo-II.git
 cd Desarrollo-II
-git checkout develop-v1
+git checkout develop-v2
 cd patent-sweep
 cp .env.example .env
 docker compose up --build
@@ -83,10 +83,20 @@ cd backend
 mvn verify
 ```
 
-Genera el reporte en `backend/target/site/jacoco/index.html` y **falla la compilación** si el paquete `service`
-(capa de lógica) baja del 100 % de líneas o de ramas.
+Genera el reporte en `backend/target/site/jacoco/index.html` y **falla la compilación** si la cobertura de líneas o
+ramas es inferior al 81 % en los paquetes `service` y `service.event`.
 
-## 6. Estructura del proyecto
+## 6. Integración continua y estilo
+
+El workflow [../.github/workflows/ci.yml](../.github/workflows/ci.yml) se ejecuta en cada push y pull request hacia
+`main`, `develop-v1` y `develop-v2`. Ejecuta las pruebas, valida el umbral de cobertura con JaCoCo, revisa reglas
+básicas de estilo con Checkstyle y construye el artefacto Maven. La configuración de Checkstyle está en
+`backend/config/checkstyle/checkstyle.xml`.
+
+SonarCloud aún no está integrado. Además, para que un resultado fallido impida aceptar un pull request, hay que
+marcar el workflow como verificación obligatoria en las reglas de protección de ramas de GitHub.
+
+## 7. Estructura del proyecto
 
 ```
 patent-sweep/
@@ -96,6 +106,7 @@ patent-sweep/
 └── backend/
     ├── Dockerfile            multi-etapa, usuario sin privilegios
     ├── pom.xml
+    ├── config/checkstyle/    reglas de inspección estática
     └── src/main/java/co/edu/univalle/patentsweep/
         ├── controller/       Controllers Layer: BusquedaController, AuthController, dto/, mapper/
         ├── service/          Logic Layer: BusquedaService, RevisionService, MotorCoincidencias,
@@ -109,7 +120,7 @@ patent-sweep/
 
 Las carpetas siguen el blueprint acordado con el DAS (secciones 2 a 4).
 
-## 7. Decisiones arquitectónicas clave (DAS)
+## 8. Decisiones arquitectónicas clave (DAS)
 
 | Decisión | Dónde se ve en el código |
 |---|---|
@@ -130,20 +141,20 @@ y el DAS difieren se resolvieron a favor del PB (prefijo `/api/v1`, formato de f
 | Adición | Justificación |
 |---|---|
 | Flyway (`db/migration`) | El ER exige un índice único parcial, columnas JSONB y el catálogo IPC/CPC precargado; migraciones versionadas (guía del curso) |
-| JaCoCo | Regla R3 del arquetipo: 100 % de cobertura en la capa de lógica |
+| JaCoCo | Umbral mínimo de 81 % en líneas y ramas de los paquetes `service` y `service.event` |
 | `UsuarioSeedRunner` | El DAS no define cómo se crea el primer usuario; se crea desde variables de entorno |
 | Mapeadores manuales | Evitan sumar MapStruct, que no está en el DAS |
 | `RevisionService` | Separa la transacción de base de datos de las llamadas HTTP para no retener conexiones |
 | WireMock (`apis-simuladas`) | Permite que el ejemplo corra sin las APIs de otros equipos |
 | PostgreSQL embebido (solo pruebas) | Prueba de integración sin Docker |
 
-## 8. Limitaciones conocidas y siguientes pasos
+## 9. Limitaciones conocidas y siguientes pasos
 
 - **Alcance del arquetipo:** solo HU-02 está implementada de punta a punta, más el envío de notificaciones de HU-12 que HU-02
   dispara. Faltan HU-01 (barrido y `BarridoScheduler`), HU-03 a HU-11, y el reintento de notificaciones `PENDIENTE_NOTIFICACION`
   al iniciar cada barrido.
-- **No incluido por decisión del curso:** CI/CD (`ci-cd.yml`, SonarCloud), Prometheus y Grafana. Los endpoints de Actuator
-  (`/actuator/health`, `/actuator/prometheus`) ya están expuestos.
+- **Pendiente:** SonarCloud y Grafana. El workflow de CI ejecuta pruebas, JaCoCo y Checkstyle, pero no despliega la
+  aplicación. Los endpoints de Actuator (`/actuator/health`, `/actuator/prometheus`) ya están expuestos.
 - **TimeLimiter:** se aplica como tiempo máximo de lectura del cliente HTTP (20 s por intento, según el PB), no como anotación
   `@TimeLimiter`, que exige métodos asíncronos.
 - **Caffeine:** `CacheConfig` está lista, pero se usará cuando se implemente la validación de clasificaciones (HU-10).
