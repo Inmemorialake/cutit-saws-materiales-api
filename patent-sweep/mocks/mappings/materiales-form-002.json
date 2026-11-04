@@ -1,0 +1,19 @@
+{
+  "request": { "method": "GET", "url": "/formulas/form-002" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "codigo": "form-002",
+      "nombre": "Recubrimiento Ligero B",
+      "aplicacionTecnica": "Disco de corte liviano",
+      "version": "1",
+      "estado": "APROBADA",
+      "componentes": [
+        { "skuMaterial": "mat-010", "nombreMaterial": "Titanio", "porcentaje": 50.0 },
+        { "skuMaterial": "mat-011", "nombreMaterial": "Aluminio", "porcentaje": 30.0 },
+        { "skuMaterial": "mat-012", "nombreMaterial": "Magnesio", "porcentaje": 20.0 }
+      ]
+    }
+  }
+}

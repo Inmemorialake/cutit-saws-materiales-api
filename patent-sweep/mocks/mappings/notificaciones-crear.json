@@ -1,0 +1,8 @@
+{
+  "request": { "method": "POST", "url": "/api/v1/notificaciones" },
+  "response": {
+    "status": 201,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "mensaje": "Notificación recibida" }
+  }
+}

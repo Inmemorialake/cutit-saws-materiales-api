@@ -1,0 +1,73 @@
+# Despliegue local de Patent Sweep (P22). Todos los valores salen del archivo .env (ver .env.example).
+# Solo se publica el puerto de la API; la base de datos y las APIs simuladas quedan en la red interna.
+services:
+  postgres:
+    image: postgres:16.15-alpine3.24
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - datos-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - patent-sweep-red
+    restart: unless-stopped
+
+  # [Archetype Convention Addition] Simula las APIs de Materiales/Fórmulas y de Notificaciones
+  # (otros equipos) para que el flujo de ejemplo corra sin depender de ellas. Ver mocks/mappings.
+  apis-simuladas:
+    image: wiremock/wiremock:3.13.2
+    volumes:
+      - ./mocks/mappings:/home/wiremock/mappings:ro
+    networks:
+      - patent-sweep-red
+    restart: unless-stopped
+
+  api-patent-sweep:
+    build:
+      context: ./backend
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      API_PUERTO: ${API_PUERTO}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_POOL_MAX: ${DB_POOL_MAX}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRACION_MINUTOS: ${JWT_EXPIRACION_MINUTOS}
+      ADMIN_USUARIO: ${ADMIN_USUARIO}
+      ADMIN_CLAVE: ${ADMIN_CLAVE}
+      SERVICIO_USUARIO: ${SERVICIO_USUARIO}
+      SERVICIO_CLAVE: ${SERVICIO_CLAVE}
+      MATERIALES_URL: ${MATERIALES_URL}
+      NOTIFICACIONES_URL: ${NOTIFICACIONES_URL}
+    ports:
+      - "${API_PUERTO}:${API_PUERTO}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      apis-simuladas:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:${API_PUERTO}/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - patent-sweep-red
+    restart: unless-stopped
+
+networks:
+  patent-sweep-red:
+    driver: bridge
+
+volumes:
+  datos-postgres:
